@@ -6,6 +6,8 @@ const App = () => {
   const [hasClicked, setHasClicked] = useState(false)
 
   // Props
+  const [barDelay, setBarDelay] = useState(100)
+  const [averagePeriod, setAveragePeriod] = useState(5)
   const [stop, setStop] = useState(false)
   const [multiplyingFactor, setMultiplyingFactor] = useState(100)
   const [maxBarCount, setMaxBarCount] = useState(100)
@@ -14,7 +16,7 @@ const App = () => {
   const propStyles = {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   }
 
   return (
@@ -32,6 +34,8 @@ const App = () => {
       {hasClicked && (
         <div>
           <AudioWaveform
+            barDelay={barDelay}
+            averagePeriod={averagePeriod}
             stop={stop}
             multiplyingFactor={multiplyingFactor}
             maxBarCount={maxBarCount}
@@ -44,12 +48,32 @@ const App = () => {
             }}
           />
 
-          <div id="propsOverlay">
+          <div id='propsOverlay'>
             <h1>Props</h1>
 
             <div style={propStyles}>
               <input
-                type="checkbox"
+                type='number'
+                value={barDelay}
+                onChange={(e) => {
+                  setBarDelay(e.target.value)
+                }}
+              />
+              <h2>barDelay</h2>
+            </div>
+            <div style={propStyles}>
+              <input
+                type='number'
+                value={averagePeriod}
+                onChange={(e) => {
+                  setAveragePeriod(e.target.value)
+                }}
+              />
+              <h2>averagePeriod</h2>
+            </div>
+            <div style={propStyles}>
+              <input
+                type='checkbox'
                 checked={stop}
                 onChange={(e) => {
                   setStop(e.target.checked)
@@ -59,7 +83,7 @@ const App = () => {
             </div>
             <div style={propStyles}>
               <input
-                type="number"
+                type='number'
                 value={multiplyingFactor}
                 onChange={(e) => {
                   setMultiplyingFactor(e.target.value)
@@ -69,7 +93,7 @@ const App = () => {
             </div>
             <div style={propStyles}>
               <input
-                type="number"
+                type='number'
                 value={maxBarCount}
                 onChange={(e) => {
                   setMaxBarCount(e.target.value)
@@ -79,7 +103,7 @@ const App = () => {
             </div>
             <div style={propStyles}>
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={saveRecord}
                 onChange={(e) => {
                   setSaveRecord(e.target.checked)

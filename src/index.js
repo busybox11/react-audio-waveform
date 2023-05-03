@@ -30,8 +30,8 @@ class AudioWaveform extends React.Component {
     // getDerivedStateFromProps lifecycle method
     this.maxBarCount = props.maxBarCount
 
-    this.BAR_DELAY = 100
-    this.AVG_PERIOD = 5
+    this.BAR_DELAY = props.barDelay
+    this.AVG_PERIOD = props.averagePeriod
 
     this.curAmplLoop = () => {
       this.analyser.getByteFrequencyData(this.dataArray)
@@ -98,6 +98,21 @@ class AudioWaveform extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // Handle barDelay and averagePeriod props
+    if (
+      this.props.barDelay !== prevProps.barDelay ||
+      this.props.averagePeriod !== prevProps.averagePeriod
+    ) {
+      clearInterval(this.curAmplInterval)
+      clearInterval(this.avgAmplInterval)
+
+      this.BAR_DELAY = this.props.barDelay
+      this.AVG_PERIOD = this.props.averagePeriod
+
+      this.curAmplInterval = setInterval(this.curAmplLoop, this.AVG_PERIOD)
+      this.avgAmplInterval = setInterval(this.avgAmplLoop, this.BAR_DELAY)
+    }
+
     // Handle stop prop
     if (this.state.stop !== prevState.stop) {
       if (this.state.stop) {
@@ -228,6 +243,8 @@ class AudioWaveform extends React.Component {
 }
 
 AudioWaveform.defaultProps = {
+  barDelay: 100,
+  averagePeriod: 5,
   maxBarCount: 100,
   multiplyingFactor: 100,
   barStyles: {},

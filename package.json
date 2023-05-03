@@ -1,6 +1,6 @@
 {
   "name": "react-audio-waveform",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Provides a simple realtime waveform visualizer for React.",
   "author": "busybox11",
   "license": "ISC",
