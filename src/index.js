@@ -157,7 +157,7 @@ class AudioWaveform extends React.Component {
 
   clearRecLoop() {
     // Stop recording
-    if (this.recorder.state === 'recording') {
+    if (this.recorder && this.recorder.state === 'recording') {
       this.recorder.stop()
       this.stream.getTracks().forEach((track) => {
         track.stop()
