@@ -162,10 +162,6 @@ class AudioWaveform extends React.Component {
       track.stop()
     })
 
-    if (this.props.onReturnAmplitudes) {
-      this.props.onReturnAmplitudes(this.amplitudes)
-    }
-
     // Clear intervals
     clearInterval(this.curAmplInterval)
     clearInterval(this.avgAmplInterval)
@@ -184,7 +180,10 @@ class AudioWaveform extends React.Component {
         recorder.ondataavailable = (e) => {
           this.chunks.push(e.data)
 
-          this.props.onSaveRecord(this.chunks)
+          this.props.onSaveRecord({
+            amplitudes: this.fullAmplitudes,
+            chunks: this.chunks
+          })
         }
 
         // Create a new AnalyserNode, and connect it to the MediaStreamAudioSourceNode
