@@ -1,7 +1,5 @@
 import React from 'react'
 
-import './style.module.css'
-
 class AudioWaveform extends React.Component {
   constructor(props) {
     super(props)
@@ -225,7 +223,7 @@ class AudioWaveform extends React.Component {
             width: barWidth,
             marginRight: barMargin,
             backgroundColor: 'white',
-            animation: `reveal_left ${this.BAR_DELAY}ms ease-in-out`
+            animation: `reveal_left ${this.BAR_DELAY}ms linear`
           },
           barStyles
         ),
@@ -256,7 +254,7 @@ class AudioWaveform extends React.Component {
         height: '100%',
         position: 'absolute',
         bottom: '0',
-        right: `-${parseInt(barWidth) + parseInt(barMargin)}px`,
+        right: '0',
         top: '0'
       },
       barContainerStyles
