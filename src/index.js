@@ -1,5 +1,7 @@
 import React from 'react'
 
+import './style.module.css'
+
 class AudioWaveform extends React.Component {
   constructor(props) {
     super(props)
@@ -64,6 +66,15 @@ class AudioWaveform extends React.Component {
       this.forceUpdate()
     }
     this.avgAmplInterval = null
+
+    // Inject style
+    const style = document.createElement('style')
+    style.innerHTML = `
+    @keyframes reveal_left {
+      from { transform: translateX(var(--audio-waveform-translate)) }
+      to { transform: translateX(0px) }
+    }`
+    document.getElementsByTagName('head')[0].appendChild(style)
   }
 
   // Rewrite the above method with the new static getDerivedStateFromProps
@@ -196,8 +207,11 @@ class AudioWaveform extends React.Component {
   }
 
   render() {
-    const { amplitudes, state } = this
+    const { fullAmplitudes, amplitudes, state } = this
     const { multiplyingFactor, barStyles, barContainerStyles } = state
+
+    const barWidth = this.props.barStyles.width || '2px'
+    const barMargin = this.props.barStyles.marginRight || '2px'
 
     const barStyle = (amplitude) => {
       return Object.assign(
@@ -205,9 +219,13 @@ class AudioWaveform extends React.Component {
         Object.assign(
           {},
           {
-            width: '2px',
-            marginRight: '2px',
-            backgroundColor: 'white'
+            '--audio-waveform-translate': `${
+              parseInt(barWidth) + parseInt(barMargin)
+            }px`,
+            width: barWidth,
+            marginRight: barMargin,
+            backgroundColor: 'white',
+            animation: `reveal_left ${this.BAR_DELAY}ms ease-in-out`
           },
           barStyles
         ),
@@ -216,10 +234,16 @@ class AudioWaveform extends React.Component {
         }
       )
     }
+
+    const amountBars = fullAmplitudes.length
     const barsArray = amplitudes.map((amplitude, index) => {
       const newBarStyle = barStyle(amplitude)
 
-      return <div key={index} style={newBarStyle} />
+      // Generate unique key based on position in array and number of iterations
+      // This is done to ensure that the animation is restarted when the number of bars changes
+      const key = `${amountBars - index}-${amountBars}`
+
+      return <div key={key} style={newBarStyle} />
     })
 
     const newBarContStyle = Object.assign(
@@ -232,7 +256,7 @@ class AudioWaveform extends React.Component {
         height: '100%',
         position: 'absolute',
         bottom: '0',
-        right: '0',
+        right: `-${parseInt(barWidth) + parseInt(barMargin)}px`,
         top: '0'
       },
       barContainerStyles
@@ -253,7 +277,8 @@ AudioWaveform.defaultProps = {
   saveRecord: false,
   getUserMediaConstraints: {
     audio: true
-  }
+  },
+  shouldTransition: true
 }
 
 export default AudioWaveform
