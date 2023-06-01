@@ -1,4 +1,4 @@
-import { AudioWaveform } from '.'
+import AudioWaveform from '.'
 
 describe('AudioWaveform', () => {
   it('is truthy', () => {
