@@ -5,7 +5,7 @@
 ## Install
 
 ```bash
-npm install --save react-audio-waveform
+npm install --save @busybox11/react-audio-waveform
 ```
 
 ## Usage
